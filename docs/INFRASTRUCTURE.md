@@ -70,6 +70,12 @@ produção.
   para vazio e o banco nasce com uma senha literal curta, enquanto o app
   conecta com a senha real → container web fica unhealthy e o deploy falha em
   `target failed to become healthy`.
+- **Interface virou uma listagem de `/assets`, com deploy verde** — o wizard do
+  Sentry mudou `frontend/react-router.config.ts` para `ssr: true`. Nessa
+  configuração o `react-router build` deixa de gerar
+  `build/client/index.html` (gera um servidor Node em `build/server/`, que
+  nossa imagem não roda), e o servidor de estáticos do Go fica sem shell para
+  servir. Hoje isso quebra o build do Docker e o `npm test` (ADR-004).
 
 
 ## Notas

@@ -24,7 +24,9 @@ Tracker de desenvolvimento. Atualizado a cada sessão.
 | **Fix: nginx indevido na máquina de dev** | Done | removido; quem faz proxy da porta 80 é o kamal-proxy |
 | **Fix: board transbordando em 1280px** | Done | colunas dividem a largura; rolagem só quando não cabe |
 | Limpeza: scripts e arquivos fora do padrão | Done | `pgxtest_main.go`, `.dockerignore`, favicon de template |
-| Sentry: integração no frontend | Pending | passo do workshop (`VITE_SENTRY_DSN` + `@sentry/react`) |
+| **Fix: interface substituída por listagem de `/assets`** | Done | o wizard do Sentry virou `ssr: true`, o build parou de gerar `index.html` (ADR-004) |
+| Guarda: teste + check no Dockerfile contra `ssr: true` | Done | `app/build-config.test.ts` e `test -f build/client/index.html` |
+| Sentry: integração no frontend | Partial | `@sentry/react-router` instalado e inicializado em `entry.client.tsx`; DSN ainda embutido no código, falta mover para `VITE_SENTRY_DSN` |
 | Sentry: configurar DSN real | Pending | secret `SENTRY_DSN` ainda vazio |
 | Bugs plantados (backend migration + frontend) | Pending | só depois do app 100% funcional — ver `WORKSHOP.md` |
 

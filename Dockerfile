@@ -15,6 +15,11 @@ COPY frontend/ ./
 # SPA build (ssr:false) -> build/client
 ENV NODE_ENV=production
 RUN npm run build
+# Fail the build here rather than shipping a broken image: without index.html
+# the Go file server has no SPA shell and every page degrades to a directory
+# listing of /assets. Only `ssr: false` in react-router.config.ts emits it.
+RUN test -f build/client/index.html \
+  || (echo "ERROR: build/client/index.html missing — react-router.config.ts must set ssr:false" && exit 1)
 
 # ---------- Stage 2: build the Go backend ----------
 FROM golang:1-alpine AS backend-build
