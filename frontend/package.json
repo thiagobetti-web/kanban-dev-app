@@ -13,6 +13,8 @@
     "@base-ui/react": "^1.8.0",
     "@fontsource-variable/geist": "^5.3.0",
     "@react-router/node": "^8.4.0",
+    "@sentry/profiling-node": "^10.75.2",
+    "@sentry/react-router": "^10.75.2",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.3.0",
     "isbot": "^5.1.36",
