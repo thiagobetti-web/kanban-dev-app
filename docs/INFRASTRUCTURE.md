@@ -36,10 +36,41 @@ produção.
 ### Gatilho de deploy
 
 - **`push` na `master`** → `deploy-preview.yml` (provision + Kamal).
+- **`workflow_dispatch`** → também dispara `deploy-preview.yml` manualmente
+  (útil para repetir um deploy sem criar um commit novo).
 - O deploy **só acontece se os secrets `CLOUDSTACK_API_KEY`/`CLOUDSTACK_SECRET_KEY`
   existirem** no GitHub. Sem eles, o workflow falha no provision (sem provisionar
   nada). Sem `SENTRY_DSN`, o app sobe com Sentry desativado.
 - **`workflow_dispatch`** → `teardown-preview.yml` (destrói o ambiente).
+
+### Ambiente preview provisionado
+
+| Recurso | Valor |
+|---------|-------|
+| URL | https://191.252.228.106.nip.io |
+| Web VM | `191.252.228.106` (interna `10.1.1.86`) |
+| DB VM (`db`) | `191.252.229.48` (interna resolvida por DNS como `db`) |
+| Rede | `kanban-dev-app-1381981922-preview` |
+| SSH | `ssh -i ~/.ssh/kanban-dev-app root@<ip>` |
+
+## Pitfalls de deploy já enfrentados
+
+- **`failed to detect signature algorithm` no passo "Install and configure
+  CloudMonkey"** = `CLOUDSTACK_API_KEY`/`CLOUDSTACK_SECRET_KEY` inválidos
+  (valor errado, ou com espaço/quebra de linha colada junto). Nada é
+  provisionado quando isso acontece.
+- **`password authentication failed for user "postgres"`** — o
+  `supabase/postgres` só aplica `POSTGRES_PASSWORD` no **primeiro** `initdb`.
+  Se o primeiro deploy gravou a senha errada, corrigir o workflow **não basta**:
+  é preciso alterar a senha no cluster já existente
+  (`ALTER USER postgres WITH PASSWORD ...` via `psql -U supabase_admin`) e
+  manter o GitHub Secret em sincronia com esse mesmo valor.
+- **Não truncar o nome da variável** no passo "Compose DATABASE_URL": a linha
+  precisa referenciar `${POSTGRES_PASSWORD}` inteiro. Um nome parcial expande
+  para vazio e o banco nasce com uma senha literal curta, enquanto o app
+  conecta com a senha real → container web fica unhealthy e o deploy falha em
+  `target failed to become healthy`.
+
 
 ## Notas
 
