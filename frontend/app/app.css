@@ -38,7 +38,7 @@
   /* Per-column tints (the memorable detail: a colored left bar per column) */
   --col-backlog: #a8a29e;
   --col-todo: #0ea5e9;
-  --col-indev: #f59e0b;
+  --col-indev: #ec4899;
   --col-review: #8b5cf6;
   --col-done: #16a34a;
 
@@ -85,7 +85,7 @@
 
   --col-backlog: #78716c;
   --col-todo: #38bdf8;
-  --col-indev: #fbbf24;
+  --col-indev: #f472b6;
   --col-review: #a78bfa;
   --col-done: #4ade80;
 
